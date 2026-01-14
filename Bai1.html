@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Cafe Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- CSS Reset & Global --- */
+        * { box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            border: 2px solid #dbaeb1; /* Viền bao quanh trang như hình */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+        }
+        h1 {
+            color: #b22222; /* Màu đỏ đậm */
+            font-style: italic;
+            font-family: "Times New Roman", serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            background-color: #ea999c; /* Màu hồng nền */
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 2px solid #dbaeb1;
+            border-bottom: 2px solid #dbaeb1;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .home-icon {
+            font-size: 20px;
+            padding: 0 15px;
+            border-right: 1px solid white;
+            color: #333;
+            cursor: pointer;
+        }
+        .nav-item {
+            padding: 0 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-right: 1px solid white;
+            font-size: 0.9em;
+        }
+        .nav-item:last-child { border-right: none; }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+        .search-box input {
+            padding: 3px;
+            border: 1px solid #fff;
+        }
+        .search-box button {
+            padding: 3px 10px;
+            background: #fff;
+            border: 1px solid #999;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+
+        /* --- Main Layout (3 Cột) --- */
+        .container {
+            display: flex;
+            min-height: 800px;
+        }
+
+        /* 1. Cột Trái (Left Sidebar) */
+        .left-sidebar {
+            width: 20%;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu-btn {
+            background-color: #ea999c;
+            color: white;
+            padding: 10px;
+            margin-bottom: 5px;
+            width: 90%;
+            text-align: left;
+            border-radius: 0 15px 15px 0; /* Bo tròn góc phải */
+            cursor: pointer;
+            border: 1px solid white;
+        }
+        .menu-btn:hover { background-color: #d87c7f; }
+        .circle-img {
+            margin-top: 20px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #ea999c;
+        }
+        .circle-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 2. Cột Giữa (Main Content) */
+        .main-content {
+            width: 55%;
+            padding: 20px;
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
+        }
+        
+        /* Style cho phần Menu List */
+        .section-header {
+            background-color: #ea999c;
+            color: #b22222;
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            margin: 20px 0 10px 0;
+            letter-spacing: 2px;
+        }
+        ul { list-style-type: disc; padding-left: 20px; }
+        li { margin-bottom: 5px; font-size: 0.9em; }
+        .veg { color: red; font-weight: bold; font-size: 0.8em; vertical-align: super; }
+        .highlight { color: #d35400; font-weight: bold; text-transform: uppercase; }
+        .back-top {
+            color: red;
+            text-decoration: underline;
+            font-size: 0.8em;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* Style cho phần Form */
+        .form-container { margin-top: 30px; }
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        .form-group { flex: 1; }
+        input[type="text"], input[type="email"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+        textarea { height: 80px; resize: none; }
+        .radio-group { margin-top: 10px; font-size: 0.9em; }
+        .btn-group button {
+            padding: 5px 15px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        /* 3. Cột Phải (Right Sidebar - Events) */
+        .right-sidebar {
+            width: 25%;
+            background-color: black;
+            color: white;
+            padding: 20px;
+        }
+        .right-sidebar h2 { font-size: 1.5em; margin-top: 0; color: white; }
+        .event-item { margin-bottom: 20px; }
+        .event-item h3 { margin: 10px 0 5px 0; font-size: 1em; }
+        .event-img { width: 100%; display: block; }
+        .event-desc { font-size: 0.8em; color: #ccc; line-height: 1.4; }
+        .event-desc a { color: #ea999c; text-decoration: none; }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #ea999c;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-style: italic;
+            border-top: 2px solid #dbaeb1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>EXAMPLE CAFE MENU</h1>
+    </header>
+
+    <nav>
+        <div class="nav-links">
+            <div class="home-icon"><i class="fas fa-home"></i></div>
+            <a href="#" class="nav-item">Starter</a>
+            <a href="#" class="nav-item">Main Courses</a>
+            <a href="#" class="nav-item">Desserts</a>
+        </div>
+        <div class="search-box">
+            <input type="text">
+            <button>Go</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="left-sidebar">
+            <div class="menu-btn">Cafe Latte</div>
+            <div class="menu-btn">Cappuccino</div>
+            <div class="menu-btn">Ocean Blue</div>
+            <div class="menu-btn">Ice-cream Cafe</div>
+            <div class="menu-btn">Order Online</div>
+            
+            <div class="circle-img">
+                <img src="../img/company.jpg" alt="People">
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="section-header">S t a r t e r</div>
+            <ul>
+                <li>Chestnut and Mushroom Goujons <span class="veg">(v)</span></li>
+                <li>Goat Cheese <span class="veg">(v)</span></li>
+                <li class="highlight">Honey Soy Chicken Kebabs <span class="veg">(v)</span></li>
+                <li>Seafood Salad <span class="veg">(v)</span></li>
+            </ul>
+            <a href="#" class="back-top">Back to Top</a>
+
+            <div class="section-header">D e s s e r t s</div>
+            <ul>
+                <li>Lemon Sorbet <span class="veg">(v)</span></li>
+                <li>Chocolate Mud Pie <span class="veg">(v)</span></li>
+                <li>Pecan Pie <span class="veg">(v)</span></li>
+                <li>Selection of fine Cheeses from Around the World <span class="veg">(v)</span></li>
+            </ul>
+            <a href="#" class="back-top">Back to Top</a>
+
+            <div class="section-header">I N F O R M A T I O N</div>
+            <form class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Telephone">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                     <div class="form-group">
+                        <select>
+                            <option>USA</option>
+                            <option>Vietnam</option>
+                        </select>
+                     </div>
+                     <div class="form-group radio-group">
+                         <input type="radio" name="nation" id="vn"> <label for="vn">Vietnamese</label>
+                         <input type="radio" name="nation" id="fr"> <label for="fr">Foreigner</label>
+                     </div>
+                </div>
+
+                <div class="form-group">
+                    <textarea placeholder="Comment"></textarea>
+                </div>
+                <br>
+                <div class="btn-group">
+                    <button type="submit">Submit</button>
+                    <button type="button">Cancel</button>
+                </div>
+            </form>
+        </main>
+
+        <aside class="right-sidebar">
+            <h2>Events</h2>
+            
+            <div class="event-item">
+                <h3>Regular Meetings</h3>
+                <img src="../img/meeting.jpg" alt="Meeting" class="event-img">
+                <p class="event-desc">
+                    Host your regular team meetings or activities in the comfort of your own private room. <a href="#">Read more...</a>
+                </p>
+            </div>
+
+            <div class="event-item">
+                <h3>Product Launches</h3>
+                <img src="../img/launch.jpg" alt="Launch" class="event-img">
+                <p class="event-desc">
+                    Launch your product with ease in a space that truly fits its image. <a href="#">Read more...</a>
+                </p>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        ABC Company &copy; - 12345678 - abccoffee@gmail.com
+    </footer>
+
+</body>
+</html>
